@@ -1,0 +1,6 @@
+.env
+/vendor
+public/images/banner/
+public/images/thumb/
+public/images/games/
+
