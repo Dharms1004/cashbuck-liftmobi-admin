@@ -117,7 +117,7 @@
                     </li> -->
                 </ul>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-gamepad"></i>
                     <p>
@@ -139,7 +139,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
 
             <!-- <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -234,6 +234,12 @@
                         <a href="{{ route('register') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Admin Register</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sendNotification') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Push Notification</p>
                         </a>
                     </li>
 
