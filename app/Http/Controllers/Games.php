@@ -60,9 +60,8 @@ class Games extends Controller
     public function  createGame(Request $request){
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(),  [
-                'name' => 'required',
-                // 'image' => 'required',
-                'url' => 'required',
+                'heading' => 'required',
+                'message' => 'required',
             ]);
 
             if ($validator->fails()) {
