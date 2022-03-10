@@ -32,26 +32,46 @@ class PushNotification extends Controller
                     ->withErrors($validator)
                     ->withInput();
             }
+            $fcmUrl = config('firebase.fcm_url');
 
-            $token= DB::table('users')->whereNotNull('FCM_TOKEN')->pluck('FCM_TOKEN');
-        
-            $notification = [
-                'title' =>$request->heading,
-                'body' => $request->message,
-                'icon' =>$request->url
-            ];
-            $extraNotificationData = ["message" => $notification];
+            $apiKey = config('firebase.fcm_api_key');
+
+            $token= DB::table('users')->whereNotNull('FCM_TOKEN')->pluck('FCM_TOKEN')->all();
     
-            $fcmNotification = [
-                'registration_ids' => $token, //multple token array
-                // 'to'        => $token, //single token
-                'notification' => $notification,
-                'data' => $extraNotificationData
+            $data = [
+                "registration_ids" => $token,
+                "notification" => [
+                    "title" => $request->heading,
+                    "body" => $request->message,  
+                ]
             ];
-            
-            $res = $this->firebaseNotification($fcmNotification);
-
-            if ($res) {
+    
+            $RESPONSE = json_encode($data);
+        
+            $headers = [
+                'Authorization:key=' . $apiKey,
+                'Content-Type: application/json',
+            ];
+        
+            // CURL
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $fcmUrl);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $RESPONSE);
+    
+            $output = curl_exec($ch);
+            if ($output === FALSE) {
+                die('Curl error: ' . curl_error($ch));
+            }        
+            curl_close($ch);
+            $res = json_decode($output);
+           
+            if ($res->success) {
                 return redirect()->back()->withSuccess('Sent Successfully !');
             }else{
                 Log::info($res);

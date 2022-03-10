@@ -10,15 +10,16 @@ trait Firebase
 
     public  function firebaseNotification($fcmNotification){
 
-        $fcmUrl =config('firebase.fcm_url');
+        $fcmUrl = config('firebase.fcm_url');
 
-        $apiKey=config('firebase.fcm_api_key');
-        
+        $apiKey = config('firebase.fcm_api_key');
+        // dump($fcmUrl);
+        // dd($apiKey);
         $http=Http::withHeaders([
             'Authorization:key'=>$apiKey,
             'Content-Type'=>'application/json'
             ])  ->post($fcmUrl,$fcmNotification);
-
+dd($http);
         return  $http->json();
     }
 }
