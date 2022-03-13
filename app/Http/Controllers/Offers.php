@@ -10,6 +10,7 @@ use App\Models\Offer;
 use DB;
 use Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class Offers extends Controller
 
@@ -76,11 +77,16 @@ class Offers extends Controller
                 $new_Steps_array[] = [$sub_key => $value];
             }
 
+            File::ensureDirectoryExists(public_path('images/banner'));
+
             if (!empty($request->offer_banner)) {
                 $imageName = time() . 'banner.' . $request->offer_banner->extension();
                 $request->offer_banner->move(public_path('images/banner'), $imageName);
                 $path =  $imageName;
             }
+
+            File::ensureDirectoryExists(public_path('images/thumb'));
+
             if (!empty($request->offer_thumb)) {
                 $imageTumbName = time() . 'thumb.' . $request->offer_thumb->extension();
                 $request->offer_thumb->move(public_path('images/thumb'), $imageTumbName);

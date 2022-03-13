@@ -65,16 +65,16 @@ class PushNotification extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS, $RESPONSE);
     
             $output = curl_exec($ch);
-            if ($output === FALSE) {
-                die('Curl error: ' . curl_error($ch));
-            }        
+            // if ($output === FALSE) {
+            //     die('Curl error: ' . curl_error($ch));
+            // }        
             curl_close($ch);
             $res = json_decode($output);
            
             if ($res->success) {
                 return redirect()->back()->withSuccess('Sent Successfully !');
             }else{
-                Log::info($res);
+                Log::info($output);
                 return view('pushNotification');
             }
         }else{
