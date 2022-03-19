@@ -9,7 +9,7 @@ class Heading extends Model
 {
     use HasFactory;
 
-    protected $table = "Headings";
+    protected $table = "headings";
     public $timestamps = FALSE;
 
     protected $fillable = [
