@@ -71,6 +71,28 @@
                                 <form method="POST" action="{{ route('sendNotification') }}" enctype="multipart/form-data">
                                     @csrf
                                     <div class="card-body">
+                                        <div class="form-group">
+                                            <label>Send To</label>
+                                            <select name="send_to" class="form-control select2 select2-danger select2-hidden-accessible" data-dropdown-css-class="select2-danger" style="width: 100%;" data-select2-id="12" tabindex="-1" aria-hidden="true" id="send_to">
+                                                <option selected="selected" data-select2-id="14">Select</option>
+                                                <option value="1" {{ !empty(old('send_to')) ? old('send_to') == 1 ? "selected" : ''  : ''  }} {{ !empty($offerData->send_to) ? $offerData->send_to == 1 ? "selected" : ''  : ''  }}>All Users</option>
+                                                <option value="2" {{ !empty(old('send_to')) ? old('send_to') == 2 ? "selected" : ''  : ''  }} {{ !empty($offerData->send_to) ? $offerData->send_to == 2 ? "selected" : ''  : ''  }}>User List</option>
+
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group" id="user_list" style="display: none;">
+                                            <!-- <label for="exampleInputFile">Upload User list</label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" accept="image/*" name="user_list" value="{{ old('user_list') }} {{ !empty($offerData->user_list) ? $offerData->user_list : ''  }}" class="custom-file-input">
+                                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                </div>
+                                            </div>-->
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" name="user_list" rows="3"></textarea>    
+                                            <span><p>Add "|| " seprated email ids of users</p></span>
+                                            
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Heading</label>
@@ -83,9 +105,9 @@
 
                                         <div class="form-group">
                                             <label for="exampleInputFile">Message</label>
-                                            <div class="input-group">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" name="message" rows="3"></textarea>    
-                                            </div>
+                                            <!-- <div class="input-group"> -->
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" name="message" rows="4"></textarea>    
+                                            <!-- </div> -->
                                         </div>
                                     </div>
 
@@ -136,6 +158,18 @@
 
     <!-- Page specific script -->
     <script>
+        $(document).ready(function() {
+            $('#send_to').on('change', function() {
+                if ( this.value == '1')
+                {
+                    $("#user_list").hide();
+                }
+                else
+                {
+                    $("#user_list").show();
+                }
+            });
+        });
         $(function() {
             bsCustomFileInput.init();
         });
