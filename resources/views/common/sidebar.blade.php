@@ -192,6 +192,12 @@
                             <p>Manage Popup</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('sendNotification') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Push Notification</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
 
@@ -236,13 +242,6 @@
                             <p>Admin Register</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('sendNotification') }}" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Push Notification</p>
-                        </a>
-                    </li>
-
                 </ul>
             </li>
 

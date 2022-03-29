@@ -182,6 +182,10 @@
                                             <input type="text" name="offer_cap" value=" @if(!empty(old('offer_package'))) {{ old('offer_cap') }} @else {{ !empty($offerData->CAP) ? $offerData->CAP : ''  }} @endif" class="form-control" i placeholder="Offer Cap">
                                         </div>
                                         <div class="form-group">
+                                            <label for="exampleInputEmail1">Offer Max Cap</label>
+                                            <input type="text" name="offer_max_cap" value=" @if(!empty(old('offer_max_cap'))) {{ old('offer_max_cap') }} @else {{ !empty($offerData->MAX_CAP) ? $offerData->MAX_CAP : ''  }} @endif" class="form-control" i placeholder="Offer max Cap">
+                                        </div>
+                                        <div class="form-group">
                                             <label for="exampleInputEmail1">Fall Back Url</label>
                                             <input type="text" name="fall_url" value="@if(!empty(old('fall_url')))  {{ old('fall_url') }} @else {{ !empty($offerData->FALLBACK_URL) ? $offerData->FALLBACK_URL : ''  }} @endif" class="form-control" i placeholder="Fall Back Url">
                                         </div>
@@ -216,6 +220,19 @@
 
 
                                             </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Audience Gender</label>
+                                            <select name="aud_gen" class="form-control select2 select2-danger select2-hidden-accessible" data-dropdown-css-class="select2-danger" style="width: 100%;" data-select2-id="12" tabindex="-1" aria-hidden="true">
+                                                <option selected="selected" data-select2-id="14">Select</option>
+                                                <option value="1" {{ !empty(old('aud_gen')) ? old('aud_gen') == 1 ? "selected" : ''  : ''  }} {{ !empty($offerData->TAR_AUDIENCE) ? $offerData->TAR_AUDIENCE == 1 ? "selected" : ''  : ''  }}>All</option>
+                                                <option value="2" {{ !empty(old('aud_gen')) ? old('aud_gen') == 2 ? "selected" : ''  : ''  }} {{ !empty($offerData->TAR_AUDIENCE) ? $offerData->TAR_AUDIENCE == 2 ? "selected" : ''  : ''  }}>Male</option>
+                                                <option value="3" {{ !empty(old('aud_gen')) ? old('aud_gen') == 2 ? "selected" : ''  : ''  }} {{ !empty($offerData->TAR_AUDIENCE) ? $offerData->TAR_AUDIENCE == 3 ? "selected" : ''  : ''  }}>Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Offer State</label>
+                                            <input type="text" name="offer_state" value="@if(!empty(old('offer_state')))  {{ old('offer_state') }} @else {{ !empty($offerData->TAR_STATE) ? $offerData->TAR_STATE : ''  }} @endif" class="form-control" i placeholder="State to be target">
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Offer Instruction</label>
