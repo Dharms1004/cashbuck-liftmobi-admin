@@ -21,21 +21,20 @@ class UserList extends Controller
     }
     public function getAllUser(Request $request)
     {
-        //if ($request->isMethod('post')) {
-        $page = request()->page;
-        $user = DB::table('users as u')
-            ->select('u.*')
-            // ->join('user_wallet as uw', 'u.USER_ID', '=', 'uw.USER_ID')
-            // ->join('balance_type as bt', 'bt.BALANCE_TYPE_ID', '=', 'uw.BALANCE_TYPE')
-            ->orderBy('USER_ID', 'desc');
-        // dd($promotion);
-        $userData = $user->paginate(1000, ['*'], 'page', $page);
         $params = $request->all();
-        $params['page'] = $page;
-        return view('userList', ['userDatas' => $userData, 'params' => $params]);
-        // } else {
-        //     return view('offerList');
-        // }
+        
+        if ($request->isMethod('post')) {
+            $page = request()->page;
+            $user = DB::table('users as u')
+                ->select('u.*')
+                ->whereBetween('CREATED_AT', [$request->start_from, $request->ends_on])
+                ->orderBy('USER_ID', 'desc');
+            $userData = $user->paginate(1000, ['*'], 'page', $page);
+            $params['page'] = $page;
+        return view('userListSearchFilter', ['userDatas' => $userData, 'params' => $params]);
+        } else {
+            return view('userListSearchFilter', ['params' => $params]);
+        }
     }
     public function getUserDetails(Request $request)
     {
