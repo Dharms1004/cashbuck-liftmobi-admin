@@ -21,22 +21,27 @@ class Withdraw extends Controller
     }
     public function withdrawList(Request $request)
     {
-
-        $page = request()->page;
-        $withdraw = DB::table('master_transaction_history')
-            ->select('users.USER_ID', 'master_transaction_history.BALANCE_TYPE_ID', 'master_transaction_history.TRANSACTION_STATUS_ID', 'master_transaction_history.TRANSACTION_TYPE_ID', 'PAYOUT_COIN', 'PAYOUT_EMIAL', 'PAY_MODE', 'TRANSACTION_DATE', 'INTERNAL_REFERENCE_NO', 'PAYOUT_NUMBER', 'CURRENT_TOT_BALANCE', 'CLOSING_TOT_BALANCE', 'users.SOCIAL_NAME', 'transaction_status.TRANSACTION_STATUS_NAME', 'transaction_type.TRANSACTION_TYPE_NAME', 'balance_type.BALANCE_TYPE')
-            ->join('users', 'users.USER_ID', '=', 'master_transaction_history.USER_ID')
-            ->join('transaction_type', 'transaction_type.TRANSACTION_TYPE_ID', '=', 'master_transaction_history.TRANSACTION_TYPE_ID')
-            ->join('transaction_status', 'transaction_status.TRANSACTION_STATUS_ID', '=', 'master_transaction_history.TRANSACTION_STATUS_ID')
-            ->join('balance_type', 'balance_type.BALANCE_TYPE_ID', '=', 'master_transaction_history.BALANCE_TYPE_ID')
-            ->whereIn('master_transaction_history.TRANSACTION_TYPE_ID',[6])
-            ->whereIn('master_transaction_history.TRANSACTION_STATUS_ID',[6])
-            ->orderBy('MASTER_TRANSACTTION_ID', 'desc');
-
-        $withdrawata = $withdraw->paginate(1000, ['*'], 'page', $page);
         $params = $request->all();
-        $params['page'] = $page;
-        return view('withdraw', ['withdrawatas' => $withdrawata, 'params' => $params]);
+
+        if ($request->isMethod('post')) {
+            $page = request()->page;
+            $withdraw = DB::table('master_transaction_history')
+                ->select('users.USER_ID', 'master_transaction_history.BALANCE_TYPE_ID', 'master_transaction_history.TRANSACTION_STATUS_ID', 'master_transaction_history.TRANSACTION_TYPE_ID', 'PAYOUT_COIN', 'PAYOUT_EMIAL', 'PAY_MODE', 'TRANSACTION_DATE', 'INTERNAL_REFERENCE_NO', 'PAYOUT_NUMBER', 'CURRENT_TOT_BALANCE', 'CLOSING_TOT_BALANCE', 'users.SOCIAL_NAME', 'transaction_status.TRANSACTION_STATUS_NAME', 'transaction_type.TRANSACTION_TYPE_NAME', 'balance_type.BALANCE_TYPE')
+                ->join('users', 'users.USER_ID', '=', 'master_transaction_history.USER_ID')
+                ->join('transaction_type', 'transaction_type.TRANSACTION_TYPE_ID', '=', 'master_transaction_history.TRANSACTION_TYPE_ID')
+                ->join('transaction_status', 'transaction_status.TRANSACTION_STATUS_ID', '=', 'master_transaction_history.TRANSACTION_STATUS_ID')
+                ->join('balance_type', 'balance_type.BALANCE_TYPE_ID', '=', 'master_transaction_history.BALANCE_TYPE_ID')
+                ->whereIn('master_transaction_history.TRANSACTION_TYPE_ID',[6])
+                ->whereIn('master_transaction_history.TRANSACTION_STATUS_ID',[6])
+                ->whereBetween('master_transaction_history.TRANSACTION_DATE',[$request->start_from, $request->ends_on])
+                ->orderBy('MASTER_TRANSACTTION_ID', 'desc');
+    
+            $withdrawata = $withdraw->paginate(1000, ['*'], 'page', $page);
+            $params['page'] = $page;
+            return view('withdrawSearchFilter', ['withdrawatas' => $withdrawata, 'params' => $params]);
+        }else{
+            return view('withdrawSearchFilter', ['params' => $params]);
+        }
 
     }
     public function witdrawApprove(Request $request)
