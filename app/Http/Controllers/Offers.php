@@ -33,8 +33,11 @@ class Offers extends Controller
 
     public function createOffer(Request $request)
     {
+        $stateList = DB::table('state')->where('status', 1)->get();
 
         if ($request->isMethod('post')) {
+            $state = implode(",", $request->offer_state);
+
             $validator = Validator::make($request->all(),  [
                 //'userId' => 'required|max:10',
                 'offer_type' => 'required',
@@ -122,7 +125,7 @@ class Offers extends Controller
                     'STATUS' => $request->status,
                     'MAX_CAP' => $request->offer_max_cap,
                     'TAR_AUDIENCE' => $request->aud_gen,
-                    'TAR_STATE' => $request->offer_state,
+                    'TAR_STATE' => $state,
                     'OFFER_APP' => $request->offer_app,
                     'CREATED_BY' => Auth::user()->name,
                     'CREATED_AT' => date('Y-m-d H:i:s'),
@@ -150,7 +153,7 @@ class Offers extends Controller
                     'STATUS' => $request->status,
                     'MAX_CAP' => $request->offer_max_cap,
                     'TAR_AUDIENCE' => $request->aud_gen,
-                    'TAR_STATE' => $request->offer_state,
+                    'TAR_STATE' => $state,
                     'OFFER_APP' => $request->offer_app,
                     'CREATED_BY' => Auth::user()->name,
                     'CREATED_AT' => date('Y-m-d H:i:s'),
@@ -163,22 +166,23 @@ class Offers extends Controller
                 if ($creteOffer) {
                     return redirect()->back()->withSuccess('Successfully Created !');
                 } else {
-                    return view('createOffer');
+                    return view('createOffer', ['states' => $stateList]);
                 }
             } elseif (!empty($request->editType) && !empty($request->offerId) && $request->editType == "edit") { //edit section
                 $updateOffer = Offer::where('OFFER_ID', $request->offerId)->update($offerData);
                 if ($updateOffer) {
                     return redirect()->back()->withSuccess('Successfully Update !');
                 } else {
-                    return view('createOffer');
+                    return view('createOffer', ['states' => $stateList]);
                 }
             }
         } else {
+            $stateList = DB::table('state')->where('status', 1)->get();
             if (!empty($request->type) && $request->type == "edit") {
                 $offerData = DB::table('offer')->where('OFFER_ID', $request->offerId)->orderBy('OFFER_ID', 'desc')->first();
-                return view('createOffer', ['offerData' => $offerData, 'type' => $request->type]);
+                return view('createOffer', ['offerData' => $offerData, 'type' => $request->type, 'states' => $stateList]);
             } else {
-                return view('createOffer');
+                return view('createOffer', ['states' => $stateList]);
             }
         }
     }

@@ -231,8 +231,20 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Offer State</label>
-                                            <input type="text" name="offer_state" value="@if(!empty(old('offer_state')))  {{ old('offer_state') }} @else {{ !empty($offerData->TAR_STATE) ? $offerData->TAR_STATE : ''  }} @endif" class="form-control" i placeholder="State to be target">
+                                            <label>Offer State</label>
+                                            <select name="offer_state[]" class="form-control select2 select2-danger select2-hidden-accessible" data-dropdown-css-class="select2-danger" style="width: 100%;" data-select2-id="12" tabindex="-1" aria-hidden="true" multiple>
+                                                <option value = ""  data-select2-id="14">Select</option>
+                                                @php
+                                                if(isset($offerData)){
+                                                    $selected_state = explode(",", $offerData->TAR_STATE);
+                                                }
+                                                @endphp
+
+                                                @foreach($states as $state)
+                                                
+                                                <option value="{{ $state->id }}"{{ isset($selected_state) && in_array($state->id, $selected_state) ? "selected" : ''}}>{{ $state->state }}</option>
+                                                @endforeach    
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Offer Instruction</label>
