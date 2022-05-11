@@ -36,7 +36,11 @@ class Offers extends Controller
         $stateList = DB::table('state')->where('status', 1)->get();
 
         if ($request->isMethod('post')) {
-            $state = implode(",", $request->offer_state);
+            if ($request->offer_state) {
+                $state = implode(",", $request->offer_state);
+            }else{
+                $state = "";
+            }
 
             $validator = Validator::make($request->all(),  [
                 //'userId' => 'required|max:10',
